@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--头文件-->
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!--这里的package属性写的是实体类包-->
+<hibernate-mapping package="com.me.relation.entity">
+    <!--class标签中的name为实体对应的类名,table标签为创建的表名,如果不写默认就是类名首字母小写(student)-->
+    <class name="Student" table="student">
+        <!--以下所有标签,name为对应实体中属性名,column属性可有可无,有的话表示自己定义在表中的字段名,不写的话默认与name一致(与实体中的属性名一致)-->
+        <!--必须有的主键标签-->
+        <id name="id">
+            <!--主键生成策略,这里表示自增长-->
+            <generator class="identity"></generator>
+        </id>
+        <property name="joinTime" column="join_time"></property>
+        <property name="name"></property>
+        <property name="sex"></property>
+        <property name="age"></property>
+    </class>
+</hibernate-mapping>
