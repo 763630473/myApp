@@ -9,6 +9,8 @@
    */
 package com.sise.deng.Model;
 
+import com.sise.deng.BaseModel.BaseModel;
+
 /**
    * @类 名： Student
    * @功能描述： TODO
@@ -16,7 +18,7 @@ package com.sise.deng.Model;
    * @创建时间： 2018年10月31日下午7:11:26
    * @修改备注：
    */
-public class Student {
+public class Student extends BaseModel implements java.io.Serializable{
 	private String Name;
 	private int Sex;
 	private String Address;

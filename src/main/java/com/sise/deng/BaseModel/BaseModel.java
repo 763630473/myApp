@@ -19,14 +19,14 @@ import java.sql.Date;
    * @ÐÞ¸Ä±¸×¢£º
    */
 public class BaseModel extends Base {	
-	private boolean IsDelete;
+	private int IsDelete;
 	private Date CreatDate;
 	private int SortNumber;
 	
-	public boolean isIsDelete() {
+	public int isIsDelete() {
 		return IsDelete;
 	}
-	public void setIsDelete(boolean isDelete) {
+	public void setIsDelete(int isDelete) {
 		IsDelete = isDelete;
 	}
 	public Date getCreatDate() {

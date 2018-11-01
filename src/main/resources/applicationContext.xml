@@ -2,26 +2,54 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	 xmlns:tx="http://www.springframework.org/schema/tx" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
        http://www.springframework.org/schema/context 
        http://www.springframework.org/schema/context/spring-context.xsd 
-       http://www.springframework.org/schema/tx 
-       http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/tx 
+     http://www.springframework.org/schema/tx/spring-tx-4.3.xsd 
+           http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
           http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-	<!-- 配置扫描的包 -->
-   <context:component-scan base-package="com.deng.*"></context:component-scan>
- 	<!-- 注册HandlerMapper、HandlerAdapter两个映射类 -->
-    <mvc:annotation-driven />
-
-    <!-- 访问静态资源 -->
-    <mvc:default-servlet-handler />
+	 <!-- 自动扫描 -->
+        <context:component-scan base-package="com.sise.deng">       
+            <!-- 扫描时跳过 @Controller 注解的JAVA类（控制器） -->
+            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        </context:component-scan>
+        
+       
     
-   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="order" value="1" />
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
+    <!-- 导入多个Properties配置文件 -->
+     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+         <property name="locations">
+             <list>
+                 <!--要是有多个配置文件，只需在这里继续添加即可 -->
+                 <value>classpath:datasource.properties</value>        
+             </list>
+         </property>
+     </bean>
+
+   <!-- 事务配置 声明式事务-->
+     <bean id="transactionManager"
+         class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+         <property name="sessionFactory" ref="sessionFactory" />
+   
+    </bean>
+     <!--配置事务增强-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+        	<tx:method name="add*" propagation="REQUIRED" />
+        	<tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="*" propagation="REQUIRED" read-only="false"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--aop配置-->
+    <aop:config>
+        <aop:pointcut id="pt" expression="execution(* com.sise.deng.Services.*.*(..)) or execution(* com.sise.deng.Repository.*.*(..))"/>                 
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pt"/>
+    </aop:config>
 </beans>

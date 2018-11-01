@@ -17,11 +17,14 @@ package com.sise.deng.BaseModel;
    * @ÐÞ¸Ä±¸×¢£º
    */
 public class Base {
-	private String Id;
-	public String getId() {
-		return Id;
+	private String ID;
+
+	public String getID() {
+		return ID;
 	}
-	public void setId(String id) {
-		Id = id;
+
+	public void setID(String iD) {
+		ID = iD;
 	}
+	
 }
